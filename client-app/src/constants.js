@@ -1,0 +1,1 @@
+export const SET_LOGGED_IN_TEAM = 'SET-LOGGED-IN-TEAM';

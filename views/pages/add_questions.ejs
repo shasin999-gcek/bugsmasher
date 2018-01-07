@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+	<% include ../partials/head %>
+	<body>
+		<% include ../partials/header %>
+
+		<div class="container" style="margin-top: 30px;">
+			<h3 class="text-dark">Add Questions</h3>
+			<hr />
+			
+			<% if(success_msg.length > 0) { %>
+				<div class="alert alert-success alert-dismissible fade show">
+					<b><%= success_msg %></b>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<% } %>
+			
+			<% if(errors.length > 0) { %>
+				<% errors.forEach(function(error) { %>
+					<div class="alert alert-danger alert-dismissible fade show">
+						<b><%= error.message %></b>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>		
+				<% }) %>
+			<% } %>
+			
+			<code>Upload both C/C++ copies of programs with same errors</code>
+			<br /><br />
+			
+			<form class="form-inline" method="post" action="#" enctype="multipart/form-data">
+				<div class="form-group mb-2">
+					<input class="form-control" name="level" placeholder="Level" required/>
+				</div>
+				<div class="form-group mx-sm-3 mb-2">
+					<input class="form-control" name="program_name" placeholder="Program Name" required/>
+				</div>
+				<div class="form-group mx-sm-3 mb-2">
+					<input type="file" class="form-control" name="program_file" required/>
+				</div>
+				<button type="submit" class="btn btn-dark mb-2">Upload</button>
+			</form>
+			
+			<hr>
+			<div class="card">
+				<h5 class="card-header">Questions</h5>
+				<div class="card-body">
+					<% if(questions.length > 0) { %>
+						<table class="table table-hover table-bordered">
+							<thead>
+								<tr>
+									<th scope="col">Level</th>
+									<th scope="col">language</th>
+									<th scope="col">Name</th>
+									<th scope="col">Filename</th>
+									<th scope="col">Filepath</th>
+									<th scope="col">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% questions.forEach(function(question) { %>
+									<tr id="<%= question._id %>">
+										<td scope="row"><%= question.level %></td>
+										<td scope="row"><%= question.language %></td>
+										<td scope="row"><%= question.name %></td>
+										<td scope="row"><%= question.file_name %></td>
+										<td scope="row"><code><%= question.file_path %></code></td>
+										<td id="action_links" scope="row">
+											<a class="text-info" href="javascript:void(0);" 
+												id="view_<%= question._id %>" onclick="viewFile('<%= question._id %>');">
+												<i class="fas fa-eye" aria-hidden="true"></i>
+											</a>
+											<a class="text-danger" href="javascript:void(0);" id="delete_<%= question._id %>" onclick="deleteFile('<%= question._id %>');">
+												<i class="far fa-trash-alt "></i>
+											</a>
+										</td>
+									</tr>	
+								<% }) %>
+							</tbody>
+						</table>
+					<% } else { %>
+						<p class="card-text"> No questions uploaded yet... </p>
+					<% } %>
+				</div> <!-- card body-->
+			</div><!-- card -->
+			
+			<!-- Modal to show code -->
+			<div class="modal fade bd-example-modal-lg" id="viewcode" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Code</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						
+						<div class="modal-body">
+							<pre id="code"></pre>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div> <!-- end container -->
+
+		<% include ../partials/scripts %>
+		
+		<script>
+			function deleteFile(objId) {
+				var $this = $('#delete_file_link');
+				var $svg = $this.children('svg')[0];
+
+				if (confirm('Are you sure to delete this...?')) {
+					// show loading (remove icon and insert a spinner)
+					$svg.remove();
+					$this.append('<i class="fa fa-sync fa-spin"></i>');
+
+					// send post request to delete the file
+					axios.post('/admin/question/delete', { object_id: objId })
+						.then(function(res) {
+							// stop loading
+							$this.children('svg')[0].remove();
+							$this.append($svg);
+
+							// remove the row
+							$(`#${objId}`).remove();
+						}).catch(function(err) {
+							console.error(err);	
+						});	
+				}
+			}
+			
+			function viewFile(objId) {
+			
+				axios.post('/admin/question/view', { object_id: objId })
+					.then(function(res) {
+						$('#code').children().remove();
+						$('#code').text(res.data.contents);
+						$('#viewcode').modal({ keyboard: true });
+					}).catch(function(err) {
+						console.error(err);	
+					});	
+			}
+			/* $(document).ready(function() {
+				$('#delete_file_link').on('click', function(e) {
+					e.preventDefault();
+					var $this = $('#delete_file_link');
+					var objId = this.getAttribute('data-id');
+					var $svg = $this.children('svg')[0];
+				
+					if (confirm('Are you sure to delete this...?')) {
+						// show loading (remove icon and insert a spinner)
+						$svg.remove();
+						$this.append('<i class="fa fa-sync fa-spin"></i>');
+						
+						// send post request to delete the file
+						axios.post('/admin/question/delete', { object_id: objId })
+							.then(function(res) {
+								// stop loading
+								$this.children('svg')[0].remove();
+								$this.append($svg);
+							
+								// remove the row
+								$(`#${objId}`).remove();
+							}).catch(function(err) {
+								console.error(err);	
+							});	
+					}
+					
+				});
+				
+				// show the code
+				$('#view_file_link').on('click', function(e) {
+					e.preventDefault();
+					var $this = $('#view_file_link');
+					var objId = this.getAttribute('data-id');
+					
+					axios.post('/admin/question/view', { object_id: objId })
+						.then(function(res) {
+							$('#code').children().remove();
+							$('#code').append(res.data.contents);
+							$('#viewcode').modal({ keyboard: true });
+						}).catch(function(err) {
+							console.error(err);	
+						});	
+					
+				});
+				
+			});*/
+		</script>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

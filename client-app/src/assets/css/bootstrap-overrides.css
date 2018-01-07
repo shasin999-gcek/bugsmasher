@@ -1,0 +1,29 @@
+.navbar {
+  border-radius: 0px;
+  padding: 5px;
+}
+
+#sidebar-wrapper {
+  margin-top: 9.44px;
+  background-color: #f5f8fa;
+}
+
+.sidebar-nav li a {
+  color: #5a4960;
+}
+
+.navbar-brand a {
+    font-family: "Roboto Mono";
+    font-weight: 600;
+}
+
+ul.nav.nav-pills.nav-justified li a {
+  font-size: 20px;
+}
+
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+    background-color: #f5f8fa;
+    color: #6b5d72;
+    box-shadow: 0 16px 26px -10px rgba(31, 36, 32, 0.09), 0 4px 25px 0px rgba(92, 84, 84, 0.12), 0 8px 10px -5px rgba(131, 155, 132, 0.2);
+}
