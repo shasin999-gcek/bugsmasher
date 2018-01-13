@@ -1,9 +1,9 @@
 {
-  "name": "Bug Smasher",
+  "name": "bug-smasher",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "NODE_PATH=. nodemon ./bin/www"
+    "start": "NODE_PATH=. node ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
@@ -21,5 +21,6 @@
     "morgan": "~1.9.0",
     "multer": "^1.3.0",
     "serve-favicon": "~2.4.5"
-  }
+  },
+  "devDependencies": {}
 }

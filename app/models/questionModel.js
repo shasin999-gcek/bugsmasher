@@ -6,7 +6,6 @@ const questionSchema = new Schema({
   level: {
     type: Number,
     required: true,
-    unique: true,
     min: 1,
     max: 10,
   },
@@ -24,6 +23,7 @@ const questionSchema = new Schema({
   },
 	language: {
 		type: String,
+    enum: ['C', 'CPP'],
 		required: true
 	},
 	file_name: {
@@ -37,5 +37,7 @@ const questionSchema = new Schema({
     unique: true
   }
 });
+
+
 
 module.exports = mongoose.model('Questions', questionSchema);

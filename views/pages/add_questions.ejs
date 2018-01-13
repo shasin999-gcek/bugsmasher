@@ -111,7 +111,7 @@
 		
 		<script>
 			function deleteFile(objId) {
-				var $this = $('#delete_file_link');
+				var $this = $(`#delete_${objId}`);
 				var $svg = $this.children('svg')[0];
 
 				if (confirm('Are you sure to delete this...?')) {

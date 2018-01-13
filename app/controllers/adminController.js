@@ -84,9 +84,10 @@ exports.add_questions_page = function(req, res) {
 }
 
 exports.add_questions = function(req, res) {
+
 	// req.file contains uploaded file details
 	var lang = req.file.filename.split('.')[1].toUpperCase();
-	
+
 	var question = new Questions({
 		level: req.body.level,
 		name: req.body.program_name,
@@ -97,6 +98,7 @@ exports.add_questions = function(req, res) {
 	
 	question.save(function(err, question) {
 		if (err) {
+			console.log(err);
 			req.flash('errors', filterErrors(err));
 			res.redirect('/admin/add-questions');
 		}	else if (question) {
