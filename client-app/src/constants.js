@@ -1,1 +1,2 @@
 export const SET_LOGGED_IN_TEAM = 'SET-LOGGED-IN-TEAM';
+export const SET_LANGUAGE = "SET-LANGUAGE";

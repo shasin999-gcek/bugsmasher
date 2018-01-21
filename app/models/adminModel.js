@@ -37,6 +37,19 @@ const adminSchema = new Schema({
 		required: true,
 		validate: passwordValidator
 	},
+  maintainance_mode: {
+    type: Boolean,
+    default: false,
+  },
+  time_duration: {
+    type: Number,      // unit minutes (30 === 30 mins competition)
+    required: true,
+    default: 30
+  },
+  is_complete: {
+    type: Boolean,
+    default: false
+  },
 	created_at: {
 		type: Date,
 		default: Date.now,

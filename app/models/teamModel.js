@@ -63,6 +63,10 @@ const teamSchema = new Schema({
     required: [true, concat('password')],
     validate: passwordValidator
   },
+  language: {
+    type: String,
+    enum: ['C', 'CPP']
+  },
   created_at: {
     type: Date,
     default: Date.now,

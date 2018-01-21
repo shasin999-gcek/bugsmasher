@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 
 // importing components
-import { FormGroup, FormControl, InputGroup, Button, HelpBlock } from 'react-bootstrap';
+import { FormGroup, FormControl, InputGroup, Button, Alert } from 'react-bootstrap';
 import { Card, Footer, Content } from './Reusable';
 import Loading from 'components/Loading/Loading';
+import Navigation from 'components/Navigation';
 
 // import auth helper
 import auth from 'helpers/auth';
 
-class SignUp extends Component {
+class Register extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -19,6 +20,7 @@ class SignUp extends Component {
 			team_name: '',
 			password: '',
 			re_password: '',
+			error_msgs: [],
 			loading: false
 		}
 	}
@@ -78,13 +80,11 @@ class SignUp extends Component {
 						} 
 
 						if(res.data.errors) {
-							res.data.errors.map(error => {
-								console.log(error.message);
-							});
+							this.setState({ error_msgs: res.data.errors });
 						} 
 
 					} else if(res.data.statusText === "OK") {
-						this.props.history.push('/sign-in');
+						this.props.history.push('/login');
 					}
 
 				})
@@ -106,60 +106,77 @@ class SignUp extends Component {
 		}
 
  		return (
-			<Card style={{marginTop: "20px"}}>
-				<Content>
-					<InputGroup>
-						<InputGroup.Addon>
-							<i className="material-icons">group</i>
-						</InputGroup.Addon>
-						<FormGroup>
-							<FormControl
-								componentClass="select" 
-								name="no_of_players"
-								value={this.state.no_of_players}
-								onChange={this.handleInputChange.bind(this)}
-							 >
-							 	<option value={0}>Choose Number of players</option>
-							 	<option value={1}>One</option>
-							 	<option value={2}>Two</option>
-							</FormControl>
-						</FormGroup>
-					</InputGroup>
-					{this.props.formFields.map(({ addonIcon, props }, index) => {
-						if(this.state.no_of_players === '1' && props.name === 'player_two_name')
-							return null; 	
+			<div style={{overflowY: true}}>
+				<Navigation />
+				{
+					this.state.error_msgs.map(msg => {
 						return (
-							<InputGroup key={index}>
-								<InputGroup.Addon>
-									<i className="material-icons">{addonIcon}</i>
-								</InputGroup.Addon>
-								<FormGroup validationState={this.getValidationState(props.name)}>
-									<FormControl 
-										value={this.state[props.name]}
-										onChange={this.handleInputChange.bind(this)}
-										{...props}
-									/>
-									<FormControl.Feedback />
-								</FormGroup>
-							</InputGroup>
-						);
-					})}
-				</Content>
-				<Footer>
-					<Button 
-						type="button"
-						bsStyle="success"
-						onClick={this.handleSubmit.bind(this)}
-					>
-						Sign Up
-					</Button>
-				</Footer>
-			</Card>
+							<Alert bsStyle="danger" style={{margin: 'auto', width: '500px'}}>
+								<div className="container-fluid">
+								  <div className="alert-icon">
+										<i className="material-icons">warning</i>
+								  </div>
+							      <b>{msg.message}</b> 
+							    </div>
+							</Alert> 
+						)
+					})
+				}
+				<Card style={{marginTop: "20px"}}>
+					<Content>
+						<InputGroup>
+							<InputGroup.Addon>
+								<i className="material-icons">group</i>
+							</InputGroup.Addon>
+							<FormGroup>
+								<FormControl
+									componentClass="select" 
+									name="no_of_players"
+									value={this.state.no_of_players}
+									onChange={this.handleInputChange.bind(this)}
+								 >
+								 	<option value={0}>Choose Number of players</option>
+								 	<option value={1}>One</option>
+								 	<option value={2}>Two</option>
+								</FormControl>
+							</FormGroup>
+						</InputGroup>
+						{this.props.formFields.map(({ addonIcon, props }, index) => {
+							if(this.state.no_of_players === '1' && props.name === 'player_two_name')
+								return null; 	
+							return (
+								<InputGroup key={index}>
+									<InputGroup.Addon>
+										<i className="material-icons">{addonIcon}</i>
+									</InputGroup.Addon>
+									<FormGroup validationState={this.getValidationState(props.name)}>
+										<FormControl 
+											value={this.state[props.name]}
+											onChange={this.handleInputChange.bind(this)}
+											{...props}
+										/>
+										<FormControl.Feedback />
+									</FormGroup>
+								</InputGroup>
+							);
+						})}
+					</Content>
+					<Footer>
+						<Button 
+							type="button"
+							bsStyle="success"
+							onClick={this.handleSubmit.bind(this)}
+						>
+							Sign Up
+						</Button>
+					</Footer>
+				</Card>
+			</div>
 		);
 	}
 }
 
-SignUp.defaultProps = {
+Register.defaultProps = {
 	formFields: [
 		{
 			props: {
@@ -213,4 +230,4 @@ SignUp.defaultProps = {
 }
 
 
-export default SignUp;
+export default Register;

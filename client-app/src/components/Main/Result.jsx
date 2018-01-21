@@ -1,5 +1,5 @@
 import React from 'react';
-import { Nav, NavItem, Alert, Well, Label } from 'react-bootstrap';
+import { Nav, NavItem, Alert, Well } from 'react-bootstrap';
 
 class Result extends React.Component {
   render () {
@@ -23,7 +23,7 @@ class Result extends React.Component {
             </div>
           </Alert>
           <Well>
-            <table class="table">
+            <table className="table">
               <thead>
                 <tr>
                   <th>Problem</th>

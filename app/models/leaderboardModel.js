@@ -7,7 +7,7 @@ const leaderboardModel = new Schema({
     unique: true,
     required: true
   },
-  completed_levels: [{
+  levels: [{
     level: {
       type: Number,
       required: false
@@ -16,7 +16,7 @@ const leaderboardModel = new Schema({
       type: Date,
       required: false
     },
-    file_name: {
+    file_path: {
       type: String,
       unique: true,
       required: false
@@ -29,15 +29,11 @@ const leaderboardModel = new Schema({
   }],
   start_time: {
     type: Date,
-    required: true
+    required: false
   },
   end_time: {
     type: Date,
     required: false
-  },
-  language: {
-    type: String,
-    required: true
   }
 });
 

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+	<% include ../partials/head %>
+	<body>
+		<% include ../partials/header %>
+
+		<div class="container" style="margin-top: 30px;">
+			<h3 class="text-dark">Settings</h3>
+			<hr />
+			
+			<% if(success_msg.length > 0) { %>
+				<div class="alert alert-success alert-dismissible fade show">
+					<b><%= success_msg %></b>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<% } %>
+
+			<% if(error_msg.length > 0) { %>
+				<div class="alert alert-danger alert-dismissible fade show">
+					<b><%= error_msg %></b>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<% } %>
+			
+			<% if(errors.length > 0) { %>
+				<% errors.forEach(function(error) { %>
+					<div class="alert alert-danger alert-dismissible fade show">
+						<b><%= error.message %></b>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>		
+				<% }) %>
+			<% } %>
+
+			<form class="form" method="post" action="/admin/settings">
+				<div class="form-group">
+					<label class="control-label" for="maintainance_mode">
+						<strong>Maintainance mode</strong>&nbsp;&nbsp;
+						<input type="checkbox" name="maintainance_mode" 
+						<% if (maintainance_mode) { %>
+						<%= 'checked' %>
+						<% } %> 
+						data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
+					</label>
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="shutdown_site">
+						<strong>Shutdown Site</strong>&nbsp;&nbsp;
+						<input type="checkbox" name="shutdown_site" 
+						<% if (is_complete) { %>
+						<%= 'checked' %>
+						<% } %>  
+						data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
+					</label>
+				</div>
+				<div class="input-group">
+				  <strong>Time duration</strong>&nbsp;&nbsp;
+				  <input type="text" name="time_duration" class="form-control col-2" 
+				  value="<%= time_duration %>"
+				  placeholder="time in minutes"required>
+				  <div class="input-group-append">
+				    <span class="input-group-text">minutes</span>
+				  </div>
+				</div>
+				<button type="submit" class="btn btn-lg btn-outline-dark">Save</button>
+			</form>
+			
+		</div> <!-- end container -->
+
+		<% include ../partials/scripts %>
+		
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -38,6 +38,17 @@ const questionSchema = new Schema({
   }
 });
 
+questionSchema.statics.isValid = function(level, language, callback) {
+  this.findOne({ level, language }, function(err, question) {
+    if(err) callback(err, null);
 
+    if(question) {
+      callback(null, false);  
+    } else {
+      callback(null, true);
+    }
+
+  });
+}
 
 module.exports = mongoose.model('Questions', questionSchema);

@@ -5,7 +5,7 @@ var adminHandlers = require('app/controllers/adminController');
 const auth = adminHandlers.auth_middleware;
 
 
-router.get('/', (req, res) => res.redirect('/admin/setup'));
+router.get('/', (req, res) => res.redirect('/admin/login'));
 
 router.get('/setup', adminHandlers.check_admin_already_created, adminHandlers.init_setup);
 
@@ -13,7 +13,12 @@ router.get('/dashboard', auth, adminHandlers.admin_dashboard);
 
 router.route('/add-questions')
 			.get(auth, adminHandlers.add_questions_page)
-			.post(auth, adminHandlers.upload.single('program_file'), adminHandlers.add_questions);
+			.post(auth, adminHandlers.add_questions);
+
+router.route('/settings')
+	  .get(auth, adminHandlers.settings_page)
+	  .post(auth, adminHandlers.settings);
+
 
 router.post('/question/delete', auth, adminHandlers.delete_question);
 router.post('/question/view', auth, adminHandlers.view_question);

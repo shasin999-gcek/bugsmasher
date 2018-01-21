@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
-import Sidebar from './Sidebar';
 
 class Navigation extends Component{
   render() {
     return (
-      <Navbar className="navbar-success" staticTop fluid>
+      <Navbar className="navbar-success navbar-static-top navbar-color-on-scroll" staticTop fluid>
         <Navbar.Header>
           <a className="navbar-brand">
             <i className="material-icons">bug_report</i>
@@ -19,7 +18,7 @@ class Navigation extends Component{
             Logout
           </NavItem>
         </Nav>
-        <Sidebar />
+        { this.props.children }
       </Navbar>
     );
   }

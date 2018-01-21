@@ -5,15 +5,16 @@ class Sidebar extends React.Component {
     return (
       <div id="sidebar-wrapper" className="sidebar-toggle">
         <ul className="sidebar-nav">
-          <li>
-              <a href="#item1"><i className="material-icons">description</i>Problem 1</a>
-          </li>
-          <li>
-              <a href="#item1"><i className="material-icons">description</i>Problem 2</a>
-          </li>
-          <li>
-              <a href="#item1"><i className="material-icons">description</i>Problem 3</a>
-          </li>
+          {this.props.problems.map((problem, index) => (
+            <li key={index}>
+              <a 
+                href="" 
+                onClick={(e) => this.props.selectLevel(problem.info.level)}>
+                <i className="material-icons">description</i>
+                { 'Level ' + problem.info.level }
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
     );
