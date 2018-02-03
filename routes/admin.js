@@ -11,6 +11,10 @@ router.get('/setup', adminHandlers.check_admin_already_created, adminHandlers.in
 
 router.get('/dashboard', auth, adminHandlers.admin_dashboard);
 
+router.get('/leaderboard', auth, adminHandlers.leaderboard_page);
+router.get('/leaderboard/:teamName', auth, adminHandlers.show_result);
+router.get('/leaderboard/:teamName/:level/download', auth, adminHandlers.download_program);
+
 router.route('/add-questions')
 			.get(auth, adminHandlers.add_questions_page)
 			.post(auth, adminHandlers.add_questions);

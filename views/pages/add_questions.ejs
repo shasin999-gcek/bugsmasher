@@ -157,52 +157,6 @@
 						console.error(err);	
 					});	
 			}
-			/* $(document).ready(function() {
-				$('#delete_file_link').on('click', function(e) {
-					e.preventDefault();
-					var $this = $('#delete_file_link');
-					var objId = this.getAttribute('data-id');
-					var $svg = $this.children('svg')[0];
-				
-					if (confirm('Are you sure to delete this...?')) {
-						// show loading (remove icon and insert a spinner)
-						$svg.remove();
-						$this.append('<i class="fa fa-sync fa-spin"></i>');
-						
-						// send post request to delete the file
-						axios.post('/admin/question/delete', { object_id: objId })
-							.then(function(res) {
-								// stop loading
-								$this.children('svg')[0].remove();
-								$this.append($svg);
-							
-								// remove the row
-								$(`#${objId}`).remove();
-							}).catch(function(err) {
-								console.error(err);	
-							});	
-					}
-					
-				});
-				
-				// show the code
-				$('#view_file_link').on('click', function(e) {
-					e.preventDefault();
-					var $this = $('#view_file_link');
-					var objId = this.getAttribute('data-id');
-					
-					axios.post('/admin/question/view', { object_id: objId })
-						.then(function(res) {
-							$('#code').children().remove();
-							$('#code').append(res.data.contents);
-							$('#viewcode').modal({ keyboard: true });
-						}).catch(function(err) {
-							console.error(err);	
-						});	
-					
-				});
-				
-			});*/
 		</script>
 	</body>
 </html>

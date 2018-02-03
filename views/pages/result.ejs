@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<% include ../partials/head %>
+	<body>
+		<% include ../partials/header %>
+
+		<div class="container" style="margin-top: 30px;">
+			<h1 class="page-header"><code>Result</code></h1><hr />
+			<div class="card">
+				<h5 class="card-header">Level wise (<%= result.team_name %>)</h5>
+				<div class="card-body">
+					<% if(result.levels.length > 0) { %>
+						<table class="table table-hover table-bordered">
+							<thead>
+								<tr>
+									<tr>
+                    <th scope="col">Level</th>
+                    <th scope="col">filename</th>
+										<th scope="col">Last submission time</th>
+                    <th scope="col">Accepted</th>
+                    <th scope="col">Attempts</th>
+                    <th scope="col">Action</th>
+									</tr>
+			  			</tr>
+							</thead>
+							<tbody>
+								<% result.levels.forEach(function(level, index) { %>
+									<tr>
+										<td scope="row"><%= level.level %></a></td>
+										<td scope="row"><code><%= level.file_path.split('/').pop()%></code></td>
+                    <td scope="row"><%= Date(level.last_submission_time) %></td>
+                    <td scope="row"><%= level.is_accepted %></td>
+                    <td scope="row"><%= level.attempts %></td>
+                    <td id="action_links" scope="row">
+											<a class="text-info" 
+												href="<%= `/admin/leaderboard/${result.team_name}/${level.level}/download` %>">
+												<i class="fas fa-download"></i>
+											</a>
+										</td>
+									</tr>	
+								<% }) %>
+							</tbody>
+						</table>
+					<% } else { %>
+						<p class="card-text"> No Result uploaded yet... </p>
+					<% } %>
+				</div> <!-- card body-->
+			</div><!-- card -->
+		</div> <!-- end container -->
+
+    <% include ../partials/scripts %>
+    
+	</body>
+</html>

@@ -4,7 +4,9 @@ const fs = require('fs');
 
 // importing models
 const Admin = require('app/models/adminModel');
+const Teams = require('app/models/teamModel');
 const Questions = require('app/models/questionModel');
+const Leaderboard = require('app/models/leaderboardModel');
 
 const { filterErrors } = require('app/helpers');
 
@@ -72,12 +74,18 @@ exports.login_page = function(req, res) {
 }
 
 exports.admin_dashboard = function(req, res) {
-	var navitems = [
+	res.locals.navitems = [
+		{ name: "Leaderboard", link: '/admin/leaderboard' },
 		{ name: "Add Questions", link: '/admin/add-questions' },
 		{ name: "Settings", link: '/admin/settings' },
 		{ name: "Logout", link: '/admin/logout' }
 	];
-	res.render('pages/dashboard', { title: 'Dashboard', navitems});
+	res.locals.title = 'Dashboard';
+	Teams.find({}, function(err, teams) {
+		if(err) throw err;
+    res.locals.teams = teams;
+		res.render('pages/dashboard');
+	})
 }
 
 exports.add_questions_page = function(req, res) {
@@ -90,6 +98,7 @@ exports.add_questions_page = function(req, res) {
 			res.locals.questions = result;
 			res.locals.title = 'Questions';
 			res.locals.navitems = [
+				{ name: "Leaderboard", link: '/admin/leaderboard' },
 				{ name: "Add Questions", link: '/admin/add-questions' },
 				{ name: "Settings", link: '/admin/settings' },
 				{ name: "Logout", link: '/admin/logout' }
@@ -98,6 +107,65 @@ exports.add_questions_page = function(req, res) {
 		}
 	});
 	
+}
+
+exports.leaderboard_page = function(req, res) {
+  Leaderboard.find({}).select('team_name levels start_time end_time').exec(function(err, results) {
+    if(err) throw err;
+    res.locals.navitems = [
+      { name: "Leaderboard", link: '/admin/leaderboard' },
+      { name: "Add Questions", link: '/admin/add-questions' },
+      { name: "Settings", link: '/admin/settings' },
+      { name: "Logout", link: '/admin/logout' }
+		];
+
+		var leaderboard = results.map(function(result) {
+			var completedLevels = result.levels.reduce(function(levels, eachLevel) {
+				if(eachLevel.is_accepted) {
+					var newLevels = levels.slice()  // mutation ruduce must be pure func
+					newLevels.push(eachLevel.level);
+					return newLevels;
+				}
+				return levels.slice();
+			}, []);
+			return { completedLevels, result };
+		});
+		
+    res.locals.title = 'Leaderboard';
+    res.locals.leaderboard = leaderboard;
+    res.render('pages/leaderboard');
+  });
+}
+
+exports.show_result = function(req, res) {
+  var teamName = req.params.teamName;
+  Leaderboard.findOne({ team_name: teamName }).select('team_name levels').exec(function(err, result) {
+    if(err) throw err;
+    if(result) {
+      res.locals.navitems = [
+        { name: "Leaderboard", link: '/admin/leaderboard' },
+        { name: "Add Questions", link: '/admin/add-questions' },
+        { name: "Settings", link: '/admin/settings' },
+        { name: "Logout", link: '/admin/logout' }
+      ];
+      res.locals.title = `${teamName} result`;
+      res.locals.result = result;
+      res.render('pages/result');
+    } else {
+      res.status(404).send("Not found")
+    }
+    
+  }); 
+}
+
+exports.download_program = function(req, res) {
+  var teamName = req.params.teamName;
+  var level = req.params.level;
+  Leaderboard.findOne({ team_name: teamName, 'levels.level': level})
+    .select('levels.$.file_path')
+    .exec(function(err, level) {
+      res.download(level.levels[0].file_path, path.basename(level.levels[0].file_path));
+    });
 }
 
 exports.add_questions = function(req, res) {
@@ -166,6 +234,7 @@ exports.settings_page = function(req, res) {
 			res.locals.time_duration = admin.time_duration;
 			res.locals.title = 'Settings';
 			res.locals.navitems = [
+				{ name: "Leaderboard", link: '/admin/leaderboard' },
 				{ name: "Add Questions", link: '/admin/add-questions' },
 				{ name: "Settings", link: '/admin/settings' },
 				{ name: "Logout", link: '/admin/logout' }

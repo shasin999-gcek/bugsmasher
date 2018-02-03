@@ -67,6 +67,11 @@ const teamSchema = new Schema({
     type: String,
     enum: ['C', 'CPP']
   },
+  set_lang_once: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   created_at: {
     type: Date,
     default: Date.now,

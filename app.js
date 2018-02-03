@@ -20,10 +20,8 @@ var config = require('config/default');
 require('dotenv').load();
 
 // connect to mongodb database
-mongoose.connect(config.mongodbConnString, function(err) {
-    if (err) throw err;
-    console.log('Successfully connected to MongoDB');
-});
+mongoose.Promise = global.Promise;
+mongoose.connect(config.mongodbConnString);
 
 
 // init application

@@ -13,13 +13,24 @@ const leaderboardModel = new Schema({
       required: false
     },
     last_submission_time: {
-      type: Date,
-      required: false
+      type: Number,
+      required: true,
+      default: 0
     },
     file_path: {
       type: String,
       unique: true,
       required: false
+    },
+    is_accepted: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
+    compile_errors: {
+      type: String,
+      required: false,
+      default: null
     },
     attempts: {
       type: Number,
@@ -28,11 +39,12 @@ const leaderboardModel = new Schema({
     }
   }],
   start_time: {
-    type: Date,
-    required: false
+    type: Number,
+    required: true,
+    default: 0
   },
   end_time: {
-    type: Date,
+    type: Number,
     required: false
   }
 });
