@@ -28,7 +28,7 @@
 										<td scope="row"><%= index + 1 %></td>
 										<td scope="row"><a href="/admin/leaderboard/<%= team.result.team_name %>"><%= team.result.team_name %></a></td>
                     <td scope="row"><%= team.completedLevels.toString() %></td>
-                    <td scope="row"><%= team.result.start_time %></td>
+                    <td scope="row"><%= new Date(team.result.start_time) %></td>
 										<td scope="row"><%= team.end_time %></td>
 									</tr>	
 								<% }) %>
