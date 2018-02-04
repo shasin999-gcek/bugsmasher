@@ -24,11 +24,12 @@
 			  			</tr>
 							</thead>
 							<tbody>
-								<% result.levels.forEach(function(level, index) { %>
+                <% result.levels.forEach(function(level, index) { %>
+                  <% var submissionTime = formatDateAndTime(level.last_submission_time)%>
 									<tr>
 										<td scope="row"><%= level.level %></a></td>
 										<td scope="row"><code><%= level.file_path.split('/').pop()%></code></td>
-                    <td scope="row"><%= new Date(level.last_submission_time).toLocaleString() %></td>
+                    <td scope="row"><code><%= submissionTime.time +', '+ submissionTime.date %></code></td>
                     <td scope="row"><%= level.is_accepted %></td>
                     <td scope="row"><%= level.attempts %></td>
                     <td id="action_links" scope="row">

@@ -109,6 +109,14 @@ exports.add_questions_page = function(req, res) {
 	
 }
 
+function formatDateAndTime(dateString) {
+	var d = new Date(dateString);
+	return {
+		date: d.toLocaleDateString(),
+    time: d.toLocaleTimeString('en-GB')
+	}
+}
+
 exports.leaderboard_page = function(req, res) {
   Leaderboard.find({}).select('team_name levels start_time end_time').exec(function(err, results) {
     if(err) throw err;
@@ -128,7 +136,12 @@ exports.leaderboard_page = function(req, res) {
 				}
 				return levels.slice();
 			}, []);
-			return { completedLevels, result };
+		
+			let { start_time, team_name, end_time} = result;
+			// format start and end date to local
+			var started = formatDateAndTime(start_time);
+			var ended = formatDateAndTime(end_time);
+			return { completedLevels, started, ended, team_name };
 		});
 		
     res.locals.title = 'Leaderboard';
@@ -148,7 +161,8 @@ exports.show_result = function(req, res) {
         { name: "Settings", link: '/admin/settings' },
         { name: "Logout", link: '/admin/logout' }
       ];
-      res.locals.title = `${teamName} result`;
+			res.locals.title = `${teamName} result`;
+			res.locals.formatDateAndTime = formatDateAndTime;
       res.locals.result = result;
       res.render('pages/result');
     } else {

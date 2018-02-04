@@ -1,3 +1,5 @@
+const { filterErrors } = require('../helpers/index');
+
 const fs = require('fs');
 const path = require('path');
 const Admin = require('app/models/adminModel');
@@ -206,15 +208,7 @@ exports.register = function(req, res) {
   // store in database
   team.save(function(err, team) {
     if(err) {
-      console.log(err);
-      var errors = [];
-      Object.keys(err.errors).forEach(key => {
-        errors.push({
-          path: err.errors[key].path,
-          message: err.errors[key].message
-        });
-      });
-
+      var errors = filterErrors(err);
       // internal server error (status code: 500)
       res.status(200).json({err, errors, message: err.name});
     } else if(team) {
