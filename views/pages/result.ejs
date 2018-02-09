@@ -29,7 +29,11 @@
 									<tr>
 										<td scope="row"><%= level.level %></a></td>
 										<td scope="row"><%= level.file_path.split('/').pop()%></td>
-                    <td scope="row" class="text-danger"><%= submissionTime.time +', '+ submissionTime.date %></td>
+                    <td scope="row" class="text-danger">
+											<% if(submissionTime.date !== "1970-1-1") { %>
+												<%= submissionTime.time +', '+ submissionTime.date %>
+											<% } %>	
+										</td>
                     <td scope="row" align="center">
 											<% if(level.is_accepted) { %>
 												<span class="text-success"><i class="fas fa-check"></i></span>
