@@ -37,7 +37,7 @@
 				<% }) %>
 			<% } %>
 			
-			<code>Upload both C/C++ copies of programs with same errors</code>
+			<span class="text-danger">Upload both C/C++ copies of programs with same errors</span>
 			<br /><br />
 			
 			<form class="form-inline" method="post" action="#" enctype="multipart/form-data">
@@ -78,7 +78,7 @@
 										<td scope="row"><%= question.language %></td>
 										<td scope="row"><%= question.name %></td>
 										<td scope="row"><%= question.file_name %></td>
-										<td scope="row"><code><%= question.file_path %></code></td>
+										<td scope="row" class="text-danger"><%= question.file_path %></td>
 										<td id="action_links" scope="row">
 											<a class="text-info" href="javascript:void(0);" 
 												id="view_<%= question._id %>" onclick="viewFile('<%= question._id %>');">
