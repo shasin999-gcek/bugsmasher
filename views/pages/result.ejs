@@ -32,6 +32,8 @@
                     <td scope="row" class="text-danger">
 											<% if(submissionTime.date !== "1970-1-1") { %>
 												<%= submissionTime.time +', '+ submissionTime.date %>
+											<% } else { %>
+												Not submitted
 											<% } %>	
 										</td>
                     <td scope="row" align="center">
