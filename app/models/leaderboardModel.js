@@ -20,7 +20,8 @@ const leaderboardModel = new Schema({
     file_path: {
       type: String,
       unique: true,
-      required: false
+      required: false,
+      default: ''
     },
     is_accepted: {
       type: Boolean,
