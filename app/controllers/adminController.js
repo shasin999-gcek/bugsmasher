@@ -286,6 +286,22 @@ exports.settings = function(req, res) {
 
 // APIS
 
+exports.remove_team = function(req, res) {
+	var objectId = req.body.object_id;
+
+	Teams.findOneAndRemove({ _id: objectId }, function(err, team) {
+		if(err) throw err;
+		if(team) {
+			Leaderboard.findOneAndRemove({ team_name: team.team_name }, function(err, lb) {
+				if(err) throw err;
+				if(lb) {
+					res.status(200).json({ message: 'Succefully removed user' + team.team_name });
+				}
+			});
+		}
+	});
+}
+
 exports.delete_question = function(req, res) {
 	var objectId = req.body.object_id;
 

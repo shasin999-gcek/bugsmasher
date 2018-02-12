@@ -23,7 +23,7 @@ router.route('/settings')
 	  .get(auth, adminHandlers.settings_page)
 	  .post(auth, adminHandlers.settings);
 
-
+router.post('/team/remove', auth, adminHandlers.remove_team);
 router.post('/question/delete', auth, adminHandlers.delete_question);
 router.post('/question/view', auth, adminHandlers.view_question);
 
